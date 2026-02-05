@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Static SPA Test</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f4f6f9;
+        }
+
+        /* NAVBAR */
+        nav {
+            background: #1e293b;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        nav h1 {
+            font-size: 20px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            flex: 1;
+            padding: 40px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            background: #38bdf8;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h1>My Test SPA</h1>
+        <ul>
+            <li><a href="#/">Home</a></li>
+            <li><a href="#/about">About</a></li>
+            <li><a href="#/services">Services</a></li>
+            <li><a href="#/contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main id="app"></main>
+
+    <footer>
+        © 2026 Test Website | Static SPA Example
+    </footer>
+
+    <script>
+        const routes = {
+            "/": `
+                <div class="card">
+                    <h2>Home Page</h2>
+                    <p>Welcome to the static SPA demo with dynamic routing.</p>
+                    <button onclick="navigate('/services')">View Services</button>
+                </div>
+            `,
+            "/about": `
+                <div class="card">
+                    <h2>About Us</h2>
+                    <p>This site uses a simple JavaScript router — no frameworks.</p>
+                </div>
+            `,
+            "/services": `
+                <div class="card">
+                    <h2>Our Services</h2>
+                    <ul>
+                        <li>Web Development</li>
+                        <li>UI/UX Design</li>
+                        <li>Testing Applications</li>
+                    </ul>
+                </div>
+            `,
+            "/contact": `
+                <div class="card">
+                    <h2>Contact</h2>
+                    <p>Email: test@example.com</p>
+                </div>
+            `
+        };
+
+        function router() {
+            const path = location.hash.slice(1) || "/";
+            const app = document.getElementById("app");
+            app.innerHTML = routes[path] || `
+                <div class="card">
+                    <h2>404</h2>
+                    <p>Page not found</p>
+                </div>
+            `;
+        }
+
+        function navigate(path) {
+            location.hash = path;
+        }
+
+        window.addEventListener("hashchange", router);
+        window.addEventListener("load", router);
+    </script>
+
+</body>
+</html>
