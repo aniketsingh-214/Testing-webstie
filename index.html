@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -45,7 +46,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         nav h1 {
@@ -104,18 +105,19 @@
             background: white;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             animation: fadeInUp 0.5s ease-out;
         }
 
         @keyframes fadeInUp {
-            from { 
-                opacity: 0; 
-                transform: translateY(30px); 
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
@@ -207,7 +209,8 @@
             font-weight: 500;
         }
 
-        input, textarea {
+        input,
+        textarea {
             width: 100%;
             padding: 12px;
             border: 2px solid #e2e8f0;
@@ -217,7 +220,8 @@
             font-family: inherit;
         }
 
-        input:focus, textarea:focus {
+        input:focus,
+        textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
@@ -246,8 +250,15 @@
         }
 
         @keyframes slideIn {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         /* STATS SECTION */
@@ -344,8 +355,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* RESPONSIVE */
@@ -368,10 +384,11 @@
         }
     </style>
 </head>
+
 <body>
 
     <nav>
-    <h1>We are Hacked</h1>
+        <h1>We are Hacked</h1>
         <ul id="nav-links">
             <li><a href="#/" class="nav-link">Home</a></li>
             <li><a href="#/about" class="nav-link">About</a></li>
@@ -419,7 +436,7 @@
                     <button class="btn btn-outline" onclick="navigate('/contact')">Get In Touch</button>
                 </div>
             `,
-            
+
             "/about": () => `
                 <div class="card">
                     <h2>About Me</h2>
@@ -470,7 +487,7 @@
                     <button class="btn" onclick="navigate('/portfolio')">View My Work</button>
                 </div>
             `,
-            
+
             "/services": () => `
                 <div class="card">
                     <h2>My Services</h2>
@@ -555,7 +572,7 @@
                     <button class="btn" onclick="navigate('/contact')">Discuss Your Project</button>
                 </div>
             `,
-            
+
             "/contact": () => `
                 <div class="card">
                     <h2>Get In Touch</h2>
@@ -601,7 +618,7 @@
         function router() {
             const path = location.hash.slice(1) || "/";
             const app = document.getElementById("app");
-            
+
             // Get route content
             const routeContent = routes[path] ? routes[path]() : `
                 <div class="card">
@@ -610,17 +627,17 @@
                     <button class="btn" onclick="navigate('/')">Go Home</button>
                 </div>
             `;
-            
+
             // Fade out
             app.style.opacity = '0';
-            
+
             setTimeout(() => {
                 app.innerHTML = routeContent;
                 app.style.opacity = '1';
-                
+
                 // Update active nav link
                 updateActiveNavLink(path);
-                
+
                 // Initialize page-specific features
                 initializePageFeatures(path);
             }, 150);
@@ -692,20 +709,20 @@
         // Handle form submission
         function handleSubmit(event) {
             event.preventDefault();
-            
+
             const spinner = document.getElementById('spinner');
             const successMessage = document.getElementById('successMessage');
             const form = document.getElementById('contactForm');
-            
+
             // Show spinner
             spinner.style.display = 'block';
-            
+
             // Simulate API call
             setTimeout(() => {
                 spinner.style.display = 'none';
                 successMessage.style.display = 'block';
                 form.reset();
-                
+
                 // Hide success message after 5 seconds
                 setTimeout(() => {
                     successMessage.style.display = 'none';
@@ -721,5 +738,179 @@
         document.getElementById('app').style.transition = 'opacity 0.15s ease-in-out';
     </script>
 
+
+    <script>
+        /**
+         * 🛡️ Security Defacement Monitor
+         * This script actively monitors the website for common signs of defacement
+         * including suspicious keywords, broken images, and unauthorized script injections.
+         */
+        (function () {
+            const CONFIG = {
+                // Keywords often associated with website defacement
+                suspiciousKeywords: [
+                    'hacked by', 'pwned', 'defaced', 'h4cked', 'owned by',
+                    'anonymous', 'security breach', 'system compromised',
+                    'touched by', 'greetz to'
+                ],
+                scanInterval: 2000 // Scan every 2 seconds
+            };
+
+            const detectedIssues = new Set();
+            let isAlertVisible = false;
+
+            // Create UI Banner for Monitoring Status
+            const statusBanner = document.createElement('div');
+            statusBanner.id = 'defacement-monitor-banner';
+            statusBanner.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: rgba(15, 23, 42, 0.9);
+                color: #2ecc71;
+                border-radius: 8px;
+                font-family: 'Segoe UI', monospace;
+                font-size: 13px;
+                z-index: 10000;
+                border-left: 5px solid #2ecc71;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+                transition: all 0.3s ease;
+                backdrop-filter: blur(5px);
+                max-width: 300px;
+            `;
+            // Add a close button
+            const closeBtn = document.createElement('span');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.style.cssText = `
+                position: absolute;
+                top: 5px;
+                right: 10px;
+                cursor: pointer;
+                font-size: 16px;
+                opacity: 0.7;
+            `;
+            closeBtn.onclick = () => statusBanner.style.display = 'none';
+            statusBanner.appendChild(closeBtn);
+
+            const content = document.createElement('div');
+            statusBanner.appendChild(content);
+            document.body.appendChild(statusBanner);
+
+            // --- Detection Logic ---
+
+            function checkKeywords() {
+                const bodyText = document.body.innerText.toLowerCase();
+                const titleText = document.title.toLowerCase();
+
+                CONFIG.suspiciousKeywords.forEach(keyword => {
+                    if (bodyText.includes(keyword) || titleText.includes(keyword)) {
+                        reportIssue(`Suspicious keyword detected: "${keyword}"`, 'high');
+                    }
+                });
+            }
+
+            function checkImages() {
+                const images = document.querySelectorAll('img');
+                images.forEach(img => {
+                    // Check for broken images which might indicate replaced/deleted assets
+                    if (img.complete && img.naturalWidth === 0) {
+                        reportIssue(`Broken image detected: ${img.src.split('/').pop()}`, 'medium');
+                    }
+                });
+            }
+
+            function checkScripts() {
+                // Mostly handled by MutationObserver, but checking existing ones
+                const scripts = document.querySelectorAll('script');
+                scripts.forEach(script => {
+                    if (script.src) {
+                        // Check for external scripts (simplified check)
+                        const scriptHost = new URL(script.src, window.location.href).hostname;
+                        if (scriptHost !== window.location.hostname && scriptHost !== '') {
+                            // reportIssue(`External script: ${scriptHost}`, 'low'); // Too noisy for legitimate external libs
+                        }
+                    }
+                });
+            }
+
+            // --- Reporting & UI Update ---
+
+            function reportIssue(message, severity) {
+                const issueId = message; // Simple dedup
+                if (!detectedIssues.has(issueId)) {
+                    detectedIssues.add(issueId);
+                    updateBanner();
+
+                    // Flash console warning
+                    if (severity === 'high') {
+                        console.error(`[Security Alert] ${message}`);
+                    } else {
+                        console.warn(`[Security Warning] ${message}`);
+                    }
+                }
+            }
+
+            function updateBanner() {
+                if (detectedIssues.size === 0) {
+                    statusBanner.style.borderLeftColor = '#2ecc71';
+                    content.innerHTML = `
+                        <div style="font-weight:bold; margin-bottom:5px">🛡️ Security Monitor Active</div>
+                        <div style="font-size:11px; opacity:0.8">System Integrity: OK</div>
+                    `;
+                } else {
+                    statusBanner.style.borderLeftColor = '#ef4444';
+                    content.innerHTML = `
+                        <div style="font-weight:bold; margin-bottom:5px; color:#ef4444">⚠️ DEFACEMENT DETECTED</div>
+                        <div style="font-size:11px; opacity:0.9; margin-bottom:8px">
+                            ${detectedIssues.size} suspicious item(s) found.
+                        </div>
+                        <ul style="padding-left:15px; margin:0; font-size:11px; max-height:100px; overflow-y:auto">
+                            ${Array.from(detectedIssues).map(issue => `<li>${issue}</li>`).join('')}
+                        </ul>
+                    `;
+                }
+            }
+
+            // --- Initialization & Observers ---
+
+            // Observer for new nodes (scripts, images, text changes)
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    // Check for new scripts
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.tagName === 'SCRIPT') {
+                            reportIssue('New script injection detected', 'high');
+                        }
+                    });
+
+                    // Trigger scan on content changes
+                    checkKeywords();
+                });
+            });
+
+            observer.observe(document.documentElement, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+
+            // Periodic full scan
+            setInterval(() => {
+                checkKeywords();
+                checkImages();
+            }, CONFIG.scanInterval);
+
+            // Initial Scan
+            setTimeout(() => {
+                checkKeywords();
+                checkImages();
+                checkScripts();
+                updateBanner();
+            }, 1000);
+
+        })();
+    </script>
 </body>
+
 </html>
