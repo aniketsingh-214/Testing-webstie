@@ -388,7 +388,11 @@
 <body>
 
     <nav>
-        <h1>We are Hacked</h1>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <img src="https://t4.ftcdn.net/jpg/05/54/85/47/360_F_554854785_51cLgZpLQixPvUt3qRvMtvYoEDOCGev5.jpg"
+                alt="Hacker Icon" style="height: 50px; border-radius: 50%; border: 2px solid #ef4444;">
+            <h1>We are Hacked</h1>
+        </div>
         <ul id="nav-links">
             <li><a href="#/" class="nav-link">Home</a></li>
             <li><a href="#/about" class="nav-link">About</a></li>
@@ -812,11 +816,34 @@
 
             function checkImages() {
                 const images = document.querySelectorAll('img');
+                const currentHostname = window.location.hostname;
+
                 images.forEach(img => {
-                    // Check for broken images which might indicate replaced/deleted assets
+                    // 1. Check for broken images
                     if (img.complete && img.naturalWidth === 0) {
                         reportIssue(`Broken image detected: ${img.src.split('/').pop()}`, 'medium');
                     }
+
+                    // 2. Check for external images (Strict Content Security Policy check)
+                    // This will catch the image we just added since it's from ftcdn.net
+                    try {
+                        const imgUrl = new URL(img.src);
+                        if (imgUrl.hostname && imgUrl.hostname !== currentHostname && imgUrl.protocol.startsWith('http')) {
+                            reportIssue(`External image source detected: ${imgUrl.hostname}`, 'high');
+                        }
+                    } catch (e) { /* ignore invalid */ }
+
+                    // 3. Check for suspicious attributes (alt, title)
+                    const attributesToCheck = [img.alt, img.title];
+                    attributesToCheck.forEach(attr => {
+                        if (attr) {
+                            CONFIG.suspiciousKeywords.forEach(keyword => {
+                                if (attr.toLowerCase().includes(keyword)) {
+                                    reportIssue(`Suspicious image attribute detected: "${keyword}"`, 'high');
+                                }
+                            });
+                        }
+                    });
                 });
             }
 
