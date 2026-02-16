@@ -1,0 +1,40 @@
+{
+  "created_at": "2026-02-16T22:43:02.527991",
+  "url": "http://localhost:9000",
+  "zones": {
+    "header": {
+      "hash": "a4d92006c5e19a8d6e9882316fb10dd6733f9a60b7211a9a21a690911f09283e",
+      "content_preview": "National Information Portal"
+    },
+    "sidebar": {
+      "hash": "f5446d634b1fb408f4e83c6b8d3e413b7671d55695f36862af2bf92ccac44bc6",
+      "content_preview": "Hacked\nHealth Check\nServer Time"
+    },
+    "footer": {
+      "hash": "5c1d7281614acd8742db3d8d685c5ca7e3ce47f5d7c3615e211befbd8007795e",
+      "content_preview": "\u00a9 2026 Government Portal. All rights reserved.\n\u26a0\ufe0f Defacement Testing Environment"
+    }
+  },
+  "images": {
+    "logo1": {
+      "path": "/static/images/logo1.png",
+      "hash": "a1c8936d921994ef205f4b6b112980b6a4e271fb8902f1fb0dced450dbb1d5c3",
+      "size": 21599
+    },
+    "image2": {
+      "path": "/static/images/image2.png",
+      "hash": "6001fde5666dbf1041d86ea801f396d7d0d56c42f2e44cf957d10b6c97750cea",
+      "size": 30624
+    },
+    "image1": {
+      "path": "/static/images/image1.png",
+      "hash": "22845c5ff93a03e174032e89ad2b41f2021107624f32fd18950834af3d6b649f",
+      "size": 351629
+    },
+    "image3": {
+      "path": "/static/images/image3.png",
+      "hash": "67f3e55ea9a7807f270c1012a367bcf20681ff76b0754bf2b1fa6b3bb53d3665",
+      "size": 40152
+    }
+  }
+}
