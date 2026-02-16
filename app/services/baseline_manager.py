@@ -2,11 +2,13 @@
 Baseline Manager - Creates and manages defacement detection baselines
 """
 import json
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Optional
 from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader
+import requests
 
 from app.utils.hash_utils import calculate_string_hash, calculate_file_hash, normalize_html
 
@@ -17,8 +19,12 @@ class BaselineManager:
         self.data_dir.mkdir(exist_ok=True)
         self.baseline_file = self.data_dir / "baseline.json"
         
-        # Setup Jinja2 for template rendering
+        # Setup Jinja2 for template rendering (localhost only)
         self.jinja_env = Environment(loader=FileSystemLoader('app/templates'))
+    
+    def is_production(self) -> bool:
+        """Check if running on Vercel/production"""
+        return os.getenv('VERCEL') == '1' or os.getenv('PRODUCTION') == 'true'
     
     def create_baseline(self, url: str, static_dir: str = "app/static") -> Dict:
         """Create a baseline snapshot of the website"""
@@ -29,15 +35,22 @@ class BaselineManager:
             "images": {}
         }
         
-        # Render the template instead of fetching via HTTP
-        try:
-            template = self.jinja_env.get_template('index.html')
-            base_template = self.jinja_env.get_template('base.html')
-            
-            # Render index.html (which extends base.html)
-            html_content = template.render(request={'url': '/'})
-        except Exception as e:
-            raise Exception(f"Failed to render template: {e}")
+        # Get HTML content based on environment
+        if self.is_production():
+            # Production: Use HTTP request to fetch actual page
+            try:
+                response = requests.get(url, timeout=10)
+                response.raise_for_status()
+                html_content = response.text
+            except Exception as e:
+                raise Exception(f"Failed to fetch URL: {e}")
+        else:
+            # Localhost: Render template directly (faster, no HTTP overhead)
+            try:
+                template = self.jinja_env.get_template('index.html')
+                html_content = template.render(request={'url': '/'})
+            except Exception as e:
+                raise Exception(f"Failed to render template: {e}")
         
         # Parse HTML
         soup = BeautifulSoup(html_content, 'html.parser')
