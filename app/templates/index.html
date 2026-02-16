@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Government Portal{% endblock %}
+
+{% block content %}
+<div class="content-section">
+    <h2>Welcome to the Government Information Portal</h2>
+
+    <!-- Defacement Detection Dashboard -->
+    <div class="defacement-dashboard">
+        <h3>🛡️ Defacement Detection System</h3>
+
+        <div class="dashboard-status" id="baseline-status">
+            <p>Loading baseline status...</p>
+        </div>
+
+        <div class="dashboard-controls">
+            <button onclick="createBaseline()" class="btn btn-primary" id="create-baseline-btn">
+                📸 Create Baseline
+            </button>
+            <button onclick="checkDefacement()" class="btn btn-success" id="check-defacement-btn" disabled>
+                🔍 Check Now
+            </button>
+            <button onclick="resetBaseline()" class="btn btn-danger" id="reset-baseline-btn" disabled>
+                🗑️ Reset Baseline
+            </button>
+        </div>
+
+        <div class="dashboard-results" id="detection-results" style="display: none;">
+            <h4>Detection Results</h4>
+            <div id="results-content"></div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Protected Image -->
+    <div class="image-container">
+        <img src="/static/images/image1.png" alt="Main Content" id="main-image" class="main-image">
+    </div>
+
+    <div class="info-section">
+        <h3>About This Portal</h3>
+        <p>This is a government information portal designed for defacement detection testing.</p>
+
+        <h3>Protected Zones</h3>
+        <ul>
+            <li>Header - Contains logo and title</li>
+            <li>Sidebar - Contains navigation and image</li>
+            <li>Main Content - Contains primary information and image</li>
+            <li>Footer - Contains footer image and information</li>
+        </ul>
+
+        <h3>System Information</h3>
+        <p>Server Time: <button onclick="getTime()" class="btn">Get Server Time</button></p>
+        <p id="server-time"></p>
+    </div>
+</div>
+{% endblock %}

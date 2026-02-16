@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Government Portal - Defacement Test{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <!-- ================= PROTECTED ZONE: HEADER ================= -->
+    <header id="header">
+        <!-- DO NOT MODIFY: DEFACEMENT MONITORED ZONE -->
+        <img src="/static/images/logo1.png" alt="Logo" class="logo">
+        <h1>National Information Portal</h1>
+    </header>
+
+    <div class="container">
+        <!-- ================= PROTECTED ZONE: SIDEBAR ================= -->
+        <aside id="sidebar">
+            <!-- DO NOT MODIFY: DEFACEMENT MONITORED ZONE -->
+            <img src="/static/images/image2.png" alt="Sidebar Image" class="sidebar-image">
+            <nav>
+                <ul>
+                    <li><a href="/">Hacked</a></li>
+                    <li><a href="/health">Health Check</a></li>
+                    <li><a href="/time">Server Time</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- ================= PROTECTED ZONE: FOOTER ================= -->
+    <footer id="footer">
+        <!-- DO NOT MODIFY: DEFACEMENT MONITORED ZONE -->
+        <img src="/static/images/image3.png" alt="Footer Image" class="footer-image">
+        <p>&copy; 2026 Government Portal. All rights reserved.</p>
+        <p class="defacement-notice">⚠️ Defacement Testing Environment</p>
+    </footer>
+
+    <script src="/static/js/script.js"></script>
+</body>
+
+</html>

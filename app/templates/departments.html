@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Departments - Government Portal{% endblock %}
+{% block nav_departments %}active{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Government Departments</h1>
+        <p class="page-subtitle">Explore all government departments and their services</p>
+    </div>
+</section>
+
+<!-- Search and Filter -->
+<section class="section">
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="departmentSearch" placeholder="Search departments..." class="search-input">
+            <button onclick="searchDepartments()" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</section>
+
+<!-- Departments Grid -->
+<section class="section">
+    <div class="container">
+        <div class="departments-grid" id="departmentsGrid">
+            {% for dept in departments %}
+            <div class="department-card-large" data-category="{{ dept.category }}">
+                <div class="card-header">
+                    <div class="card-icon-large">🏛️</div>
+                    <div>
+                        <h3 class="card-title">{{ dept.name }}</h3>
+                        <span class="badge">{{ dept.category }}</span>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <p class="card-description">{{ dept.description }}</p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Head:</span>
+                            <span class="info-value">{{ dept.head }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Email:</span>
+                            <span class="info-value">{{ dept.email }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Phone:</span>
+                            <span class="info-value">{{ dept.phone }}</span>
+                        </div>
+                        {% if dept.established %}
+                        <div class="info-item">
+                            <span class="info-label">Established:</span>
+                            <span class="info-value">{{ dept.established }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-address">
+                        <strong>Address:</strong><br>
+                        {{ dept.address }}
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button data-department-id="{{ dept.id }}" class="btn btn-outline btn-sm view-services-btn">
+                        View Services
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function searchDepartments() {
+        const searchTerm = document.getElementById('departmentSearch').value.toLowerCase();
+        const cards = document.querySelectorAll('.department-card-large');
+
+        cards.forEach(function (card) {
+            const text = card.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Real-time search
+    document.getElementById('departmentSearch').addEventListener('input', searchDepartments);
+
+    // Event delegation for view services buttons
+    document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('view-services-btn')) {
+                const deptId = e.target.getAttribute('data-department-id');
+                window.location.href = '/services?department_id=' + deptId;
+            }
+        });
+    });
+</script>
+{% endblock %}

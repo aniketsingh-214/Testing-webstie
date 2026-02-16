@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}Services - Government Portal{% endblock %}
+{% block nav_services %}active{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Government Services</h1>
+        <p class="page-subtitle">Browse and access all available government services</p>
+    </div>
+</section>
+
+<!-- Filters -->
+<section class="section">
+    <div class="container">
+        <div class="filters">
+            <div class="filter-group">
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter" class="filter-select" onchange="filterServices()">
+                    <option value="">All Categories</option>
+                    <option value="documentation">Documentation</option>
+                    <option value="licensing">Licensing</option>
+                    <option value="registration">Registration</option>
+                    <option value="certification">Certification</option>
+                    <option value="information">Information</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="departmentFilter">Department:</label>
+                <select id="departmentFilter" class="filter-select" onchange="filterServices()">
+                    <option value="">All Departments</option>
+                    {% for dept in departments %}
+                    <option value="{{ dept.id }}">{{ dept.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>
+                    <input type="checkbox" id="onlineOnly" onchange="filterServices()">
+                    Online Services Only
+                </label>
+            </div>
+
+            <div class="filter-group">
+                <input type="text" id="serviceSearch" placeholder="Search services..." class="search-input">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Grid -->
+<section class="section">
+    <div class="container">
+        <div class="services-grid" id="servicesGrid">
+            {% for service in services %}
+            <div class="service-card-detailed" data-category="{{ service.category }}"
+                data-department="{{ service.department_id }}" data-online="{{ service.is_online|lower }}">
+
+                <div class="service-card-header">
+                    <h3 class="service-title">{{ service.name }}</h3>
+                    <div class="service-badges">
+                        <span class="badge">{{ service.category }}</span>
+                        {% if service.is_online %}
+                        <span class="badge badge-success">Online</span>
+                        {% else %}
+                        <span class="badge badge-warning">In-Person</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="service-card-body">
+                    <p class="service-description">{{ service.description }}</p>
+
+                    <div class="service-details">
+                        <div class="detail-row">
+                            <span class="detail-label">⏱️ Processing Time:</span>
+                            <span class="detail-value">{{ service.processing_time }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">💰 Fee:</span>
+                            <span class="detail-value">
+                                {% if service.fee > 0 %}
+                                ₹{{ service.fee }}
+                                {% else %}
+                                <span class="text-success">Free</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    {% if service.requirements %}
+                    <div class="requirements">
+                        <strong>Requirements:</strong>
+                        <ul class="requirements-list">
+                            {% for req in service.requirements %}
+                            <li>{{ req }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="service-card-footer">
+                    {% if service.is_online %}
+                    <button class="btn btn-primary btn-block service-action-btn" data-service-id="{{ service.id }}"
+                        data-action="apply">
+                        Apply Online
+                    </button>
+                    {% else %}
+                    <button class="btn btn-outline btn-block service-action-btn" data-service-id="{{ service.id }}"
+                        data-action="info">
+                        Get Information
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="noResults" class="no-results" style="display: none;">
+            <p>No services found matching your criteria.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function filterServices() {
+        const category = document.getElementById('categoryFilter').value;
+        const department = document.getElementById('departmentFilter').value;
+        const onlineOnly = document.getElementById('onlineOnly').checked;
+        const searchTerm = document.getElementById('serviceSearch').value.toLowerCase();
+
+        const cards = document.querySelectorAll('.service-card-detailed');
+        let visibleCount = 0;
+
+        cards.forEach(function (card) {
+            let show = true;
+
+            // Category filter
+            if (category && card.dataset.category !== category) {
+                show = false;
+            }
+
+            // Department filter
+            if (department && card.dataset.department !== department) {
+                show = false;
+            }
+
+            // Online only filter
+            if (onlineOnly && card.dataset.online !== 'true') {
+                show = false;
+            }
+
+            // Search filter
+            if (searchTerm && !card.textContent.toLowerCase().includes(searchTerm)) {
+                show = false;
+            }
+
+            card.style.display = show ? 'block' : 'none';
+            if (show) visibleCount++;
+        });
+
+        // Show/hide no results message
+        document.getElementById('noResults').style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    // Real-time search
+    document.getElementById('serviceSearch').addEventListener('input', filterServices);
+
+    // Event delegation for service action buttons and URL parameter check
+    document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('service-action-btn')) {
+                const serviceId = e.target.getAttribute('data-service-id');
+                const action = e.target.getAttribute('data-action');
+
+                if (action === 'apply') {
+                    alert('Redirecting to application form for service ID: ' + serviceId);
+                    // In production, this would redirect to the actual application form
+                } else if (action === 'info') {
+                    alert('Getting information for service ID: ' + serviceId);
+                    // In production, this would show more details or download information
+                }
+            }
+        });
+
+        // Check URL parameters for pre-filtering
+        const urlParams = new URLSearchParams(window.location.search);
+        const deptParam = urlParams.get('department_id');
+        if (deptParam) {
+            document.getElementById('departmentFilter').value = deptParam;
+            filterServices();
+        }
+    });
+</script>
+{% endblock %}
